@@ -36,7 +36,7 @@
 ;;;###autoload
 (defun kllib:shell-command-to-list (command)
   "コマンドの結果をリストで取得."
-  (s-split "\n" (e:shell-command-to-string command)))
+  (s-split "\n" (kllib:shell-command-to-string command)))
 
 ;;;###autoload
 (defun kllib:propertize-message (format &rest args)
