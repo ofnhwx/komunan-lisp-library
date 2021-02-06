@@ -4,8 +4,8 @@
 
 ;; Author: Yuta Fujita <ofnhwx@komunan.net>
 ;; URL: https://github.com/ofnhwx/komunan-lisp-library
-;; Version: 0.01
-;; Package-Requires: ((s "1.12.0"))
+;; Version: 0.02
+;; Package-Requires: ((s "1.12.0") (dash "2.17.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,7 +26,25 @@
 
 (eval-and-compile
   (require 'cl-lib)
+  (require 'dash)
   (require 's))
+
+;;;###autoload
+(defun kllib:project-root (path)
+  "指定した PATH のプロジェクトルートを取得."
+  (->> '(".git" ".hg" ".svn")
+       (--map (locate-dominating-file path it))
+       (-non-nil)
+       (--max-by (> (length it) (length other)))))
+
+;;;###autoload
+(defun kllib:project-name (path &optional delimiter)
+  (let* ((path (directory-file-name path))
+         (name (file-name-nondirectory path))
+         (parent (kllib:project-root (file-name-directory path))))
+    (if parent
+        (s-concat (kllib:project-name parent delimiter) (or delimiter "/") name)
+      name)))
 
 ;;;###autoload
 (defun kllib:shell-command-to-string (command)
