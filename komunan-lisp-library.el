@@ -4,7 +4,7 @@
 
 ;; Author: Yuta Fujita <ofnhwx@komunan.net>
 ;; URL: https://github.com/ofnhwx/komunan-lisp-library
-;; Version: 0.02
+;; Version: 0.03
 ;; Package-Requires: ((s "1.12.0") (dash "2.17.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -39,12 +39,13 @@
 
 ;;;###autoload
 (defun kllib:project-name (path &optional delimiter)
-  (let* ((path (directory-file-name path))
-         (name (file-name-nondirectory path))
-         (parent (kllib:project-root (file-name-directory path))))
-    (if parent
-        (s-concat (kllib:project-name parent delimiter) (or delimiter "/") name)
-      name)))
+  (when path
+    (let* ((path (directory-file-name path))
+           (name (file-name-nondirectory path))
+           (parent (kllib:project-root (file-name-directory path))))
+      (if parent
+          (s-concat (kllib:project-name parent delimiter) (or delimiter "/") name)
+        name))))
 
 ;;;###autoload
 (defun kllib:shell-command-to-string (command)
