@@ -4,7 +4,7 @@
 
 ;; Author: Yuta Fujita <ofnhwx@komunan.net>
 ;; URL: https://github.com/ofnhwx/komunan-lisp-library
-;; Version: 0.03
+;; Version: 0.04
 ;; Package-Requires: ((s "1.12.0") (dash "2.17.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -46,6 +46,18 @@
       (if parent
           (s-concat (kllib:project-name parent delimiter) (or delimiter "/") name)
         name))))
+
+;;;###autoload
+(defun kllib:convert (string &rest options)
+  (cl-dolist (option options string)
+    (case option
+      (:pluralize   (setq string (inflection-pluralize-string   string)))
+      (:singularize (setq string (inflection-singularize-string string)))
+      (:camelize    (setq string (string-inflection-upper-camelcase-function string)))
+      (:underscore  (setq string (string-inflection-underscore-function      string)))
+      (:dasherize   (setq string (s-replace "_" "-" (kllib:convert string :underscore))))
+      (:tableize    (setq string (kllib:convert string :pluralize :underscore)))
+      (:classify    (setq string (kllib:convert string :singularize :camelize))))))
 
 ;;;###autoload
 (defun kllib:shell-command-to-string (command)
