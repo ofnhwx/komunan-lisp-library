@@ -4,7 +4,7 @@
 
 ;; Author: Yuta Fujita <ofnhwx@komunan.net>
 ;; URL: https://github.com/ofnhwx/komunan-lisp-library
-;; Version: 0.05
+;; Version: 0.5.1
 ;; Package-Requires: ((s "1.12.0") (dash "2.17.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@
 ;;;###autoload
 (defun kllib:project-name (path)
   (and path
-       (file-name-nondirectory path)))
+       (file-name-nondirectory (directory-file-name path))))
 
 ;;;###autoload
 (defun kllib:convert (string &rest options)
