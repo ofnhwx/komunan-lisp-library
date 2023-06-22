@@ -4,7 +4,7 @@
 
 ;; Author: Yuta Fujita <ofnhwx@komunan.net>
 ;; URL: https://github.com/ofnhwx/komunan-lisp-library
-;; Version: 0.5.1
+;; Version: 0.5.2
 ;; Package-Requires: ((s "1.12.0") (dash "2.17.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@
 (defun kllib:project-root (&optional path)
   "指定した PATH のプロジェクトルートを取得."
   (when-let (project (project-current nil (or path default-directory)))
-    (car (project-roots project))))
+    (project-root project)))
 
 ;;;###autoload
 (defun kllib:project-name (path)
@@ -43,14 +43,16 @@
 ;;;###autoload
 (defun kllib:convert (string &rest options)
   (cl-dolist (option options string)
-    (case option
+    (cl-case option
       (:pluralize   (setq string (inflection-pluralize-string   string)))
       (:singularize (setq string (inflection-singularize-string string)))
-      (:camelize    (setq string (string-inflection-upper-camelcase-function string)))
-      (:underscore  (setq string (string-inflection-underscore-function      string)))
-      (:dasherize   (setq string (s-replace "_" "-" (kllib:convert string :underscore))))
-      (:tableize    (setq string (kllib:convert string :pluralize :underscore)))
-      (:classify    (setq string (kllib:convert string :singularize :camelize))))))
+      (:camel       (setq string (string-inflection-camelcase-function   string)))
+      (:pascal      (setq string (string-inflection-pascal-case-function string)))
+      (:kebab       (setq string (string-inflection-kebab-case-function  string)))
+      (:underscore  (setq string (string-inflection-underscore-function  string)))
+      (:upcase      (setq string (string-inflection-upcase-function      string)))
+      (:table       (setq string (kllib:convert string :pluralize :underscore)))
+      (:class       (setq string (kllib:convert string :singularize :pascal))))))
 
 ;;;###autoload
 (defun kllib:shell-command-to-string (command)
