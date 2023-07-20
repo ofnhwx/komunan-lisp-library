@@ -76,13 +76,6 @@
       (unless (bolp)
         (insert "\n")))))
 
-;;;###autoload
-(defun kllib:unpropertize (text)
-  "TEXT からテキストプロパティを除いた文字列を取得する."
-  (let ((s (s-concat text)))
-    (set-text-properties 0 (length s) nil s)
-    s))
-
 (provide 'komunan-lisp-library)
 
 ;;; komunan-lisp-library.el ends here
