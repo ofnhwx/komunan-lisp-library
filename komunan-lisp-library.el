@@ -32,7 +32,7 @@
 ;;;###autoload
 (defun kllib:project-root (&optional path)
   "指定した PATH のプロジェクトルートを取得."
-  (when-let (project (project-current nil (or path default-directory)))
+  (when-let (project (ignore-errors (project-current nil (or path default-directory))))
     (project-root project)))
 
 ;;;###autoload
